@@ -1,0 +1,88 @@
+@import "../../configs/breakpoints.json";
+
+@function gutter($type: mobile) {
+    @return map-get($gutters, $type);
+}
+
+$there-is-no-higher-breakpoint: 9999rem;
+
+$breakpoints: (
+    mobile: rem($mobile),
+    tablet: rem($tablet),
+    desktop: rem($desktop)
+);
+
+$gutters: (
+    mobile: rem(20px),
+    tablet: rem(20px),
+    desktop: rem(30px),
+);
+
+$grid-mobile: (
+    name: mobile,
+    columns: 2,
+    gutter: gutter(mobile),
+);
+
+$grid-tablet: (
+    name: tablet,
+    columns: 12,
+    gutter: gutter(tablet),
+    media: '(min-width: get-breakpoint(tablet))',
+);
+
+$grid-desktop: (
+    name: desktop,
+    columns: 12,
+    gutter: gutter(desktop),
+    media: '(min-width: get-breakpoint(desktop))',
+);
+
+@function grid-name($grid) {
+    @return map-get($grid, name);
+}
+
+@function get-breakpoint($target) {
+    @return map-get($breakpoints, $target);
+}
+
+@function get-next-breakpoint($target) {
+    $possible-nexts: ();
+    $next-breakpoint: null;
+
+    @each $breakpoint, $value in $breakpoints {
+        @if $breakpoint == $target or length($possible-nexts) > 0 {
+            $possible-nexts: append($possible-nexts, $breakpoint);
+        }
+    }
+
+    @if length($possible-nexts) > 1 {
+        $next-breakpoint: nth($possible-nexts, 2);
+
+        @return map-get($breakpoints, $next-breakpoint);
+    }
+
+    @return $there-is-no-higher-breakpoint;
+}
+
+@mixin when-wider-than($grid) {
+    @include grid-media($grid) {
+        @content;
+    }
+}
+
+@mixin when-less-than($grid) {
+    $target: map-get($grid, name);
+
+    @media screen and (max-width: get-breakpoint($target) - rem(1px)) {
+        @content;
+    }
+}
+
+@mixin when-on($grid) {
+    $target: map-get($grid, name);
+
+    @media screen and (min-width: get-breakpoint($target)) and (max-width: get-next-breakpoint($target) - rem(1px)) {
+        @content;
+    }
+}

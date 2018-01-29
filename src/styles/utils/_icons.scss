@@ -1,0 +1,67 @@
+// @font-face {
+//     font-family: 'CHANGEME-icons';
+//     src: url('/fonts/CHANGEME-icons/CHANGEME-icons.eot');
+//     src:
+//         url('/fonts/CHANGEME-icons/CHANGEME-icons.eot#iefix') format('embedded-opentype'),
+//         url('/fonts/CHANGEME-icons/CHANGEME-icons.ttf') format('truetype'),
+//         url('/fonts/CHANGEME-icons/CHANGEME-icons.woff') format('woff'),
+//         url('/fonts/CHANGEME-icons/CHANGEME-icons.svg') format('svg');
+//     font-weight: normal;
+//     font-style: normal;
+// }
+
+// @mixin icon-font-definition {
+//     /* use !important to prevent issues with browser extensions that change fonts */
+//     font-family: 'CHANGEME-icons' !important;
+//     speak: none;
+//     font-style: normal;
+//     font-weight: normal;
+//     font-variant: normal;
+//     text-transform: none;
+//     line-height: 1;
+
+//     /* Better Font Rendering =========== */
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+// }
+
+// @mixin icon($name: false) {
+//     @include icon-font-definition;
+
+//     @if $name != false {
+//         @extend .#{$name};
+//     }
+
+//     &::after {
+//         @content;
+//     }
+// }
+
+// [class^="icon-"],
+// [class*=" icon-"] {
+//     @include icon-font-definition;
+// }
+
+// $icons: (
+//     linkout: '\e969',
+//     popup: '\e900',
+//     sound-on: '\ea27',
+//     sound-off: '\ea2a',
+//     share: '\ea3c',
+//     mail: '\ea85',
+//     facebook: '\ea92',
+//     twitter: '\ea97',
+//     close: '\e918',
+//     pause: '\e902',
+//     play: '\e903',
+//     fb-social: '\e904',
+//     tw-social: '\e905',
+//     ig-social: '\e906',
+//     yt-social: '\e907'
+// );
+
+// @each $icon, $string in $icons {
+//     .icon-#{$icon}::after {
+//         content: $string;
+//     }
+// }

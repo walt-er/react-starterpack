@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const ExampleComponent = () => (
-
-  <div className="example-component">
-    <h2>Component</h2>
-  </div>
-);
-
+class ExampleComponent extends Component {
+    render() {
+        return (
+            <div className="example-component">
+                <h2>Component</h2>
+            </div>
+        );
+    }
+}
 
 export default ExampleComponent;

@@ -1,0 +1,104 @@
+//=======================================================
+// Mixins
+//=======================================================
+
+// Clearfix
+@mixin clearfix {
+    &::after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+// Makes an element visually hidden, but accessible.
+// @see http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+@mixin element-invisible {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+// Turns off the element-invisible effect.
+@mixin element-invisible-off {
+    position: static !important;
+    clip: auto;
+    height: auto;
+    width: auto;
+    overflow: auto;
+}
+
+// Makes an element visually hidden by default, but visible when focused.
+@mixin element-focusable {
+    @include element-invisible;
+
+    &:active,
+    &:focus {
+        @include element-invisible-off;
+    }
+}
+
+// Helper function for working with Sass maps.
+// Example: @include print($configuration);
+@mixin print($declarations) {
+    @each $property, $value in $declarations {
+        #{$property}: $value;
+    }
+}
+
+// TODO have this accept variables, maybe a map or just
+// variables for each BP
+@mixin component-margins {
+    margin-bottom: $mobile-component-margin-bottom;
+
+    @include when-wider-than(tablet) {
+        margin-bottom: $tablet-component-margin-bottom;
+    }
+
+    @include when-wider-than(small_desktop) {
+        margin-bottom: $small_desktop-component-margin-bottom;
+    }
+
+    @include when-wider-than(large_desktop) {
+        margin-bottom: $large_desktop-component-margin-bottom;
+    }
+}
+
+// Bleeds outside of the page container margins
+@mixin bleed-left() {
+    margin-left: $page-margin-mobile * -1;
+
+    @include media($wider-than-tablet) {
+        margin-left: $page-margin-tablet * -1;
+    }
+
+    @include media($wider-than-desktop) {
+        margin-left: $page-margin-desktop * -1;
+    }
+}
+
+@mixin bleed-right() {
+    margin-right: $page-margin-mobile * -1;
+
+    @include media($wider-than-tablet) {
+        margin-right: $page-margin-tablet * -1;
+    }
+
+    @include media($wider-than-desktop) {
+        margin-right: $page-margin-desktop * -1;
+    }
+}
+
+// Omega Reset for bourbon/neat
+@mixin omega-reset($nth, $columns) {
+    &:nth-child(#{$nth}) {
+        margin-right: flex-gutter($columns);
+    }
+
+    &:nth-child(#{$nth}+1) {
+        clear: none;
+    }
+}
+

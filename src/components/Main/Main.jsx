@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
-import { Match } from 'react-router';
+import { Route } from 'react-router';
 
-// import ExampleContainer from '../../views/ExampleContainer/ExampleContainer';
+import ExampleContainer from '../../views/ExampleContainer/ExampleContainer';
+
+const allViews = {
+    home: ExampleContainer
+};
 
 class Main extends Component {
-    loadView(fileName) {
+
+    componentWillMount() {
+        this.views = [];
+    }
+
+    loadView(view) {
         return () => {
-            if (this.views[fileName]) {
-                return this.views[fileName];
+
+            // Return the view if we found it before
+            if (this.views && this.views[view]) {
+                return this.views[view];
             }
 
-            new Promise(resolve => require.ensure([], (require) => {
-                resolve(require(`../../views/${fileName}/${fileName}`)); // eslint-disable-line
-            }))
-                .then((View) => {
-                    this.views[fileName] = <View />;
-                })
-                .then(() => this.forceUpdate())
-                .catch((err) => {
-                    // console.error(err);
-                    throw new Error(err);
-                });
+            // Get and save component by nicename
+            const TheComponent = allViews[view];
+            this.views[view] = <TheComponent {...this.props} />;
+            return this.views[view];
 
-            return <div />;
         };
     }
 
@@ -31,7 +34,7 @@ class Main extends Component {
         return (
             <main>
                 <Switch>
-                    <Match
+                    <Route
                         pattern="/"
                         exactly
                         component={this.loadView('home')}

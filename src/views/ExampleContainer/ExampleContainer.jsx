@@ -3,15 +3,6 @@ import PropTypes from 'prop-types';
 import ExampleComponent from '../../components/ExampleComponent/ExampleComponent';
 
 class ExampleContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.testMethod();
-    }
-
-    testMethod() {
-        const x = 1;
-        return x;
-    }
 
     render() {
         return (

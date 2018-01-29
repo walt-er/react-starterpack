@@ -11,7 +11,9 @@ class App extends Component {
             <BrowserRouter>
                 <div className="app">
                     <Header />
-                    <Main />
+                    <Main
+                        name="Testing"
+                    />
                     <Footer />
                 </div>
             </BrowserRouter>

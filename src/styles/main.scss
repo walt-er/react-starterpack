@@ -1,23 +1,30 @@
-// Standard reset
-@import 'reset';
+// Utilities
+//
+// Import variables and mixins
+// Should contain NO css output.
+// Only variables / mixins / settings.
+// ========================================
+@import 'utils/init';
 
-// Fonts
-@import 'fonts';
+// Base
+//
+// Plain html element styling. Shouldn't require
+// any classes.
+// ========================================
+@import 'base/init';
 
-// Mixins, colors, utility classes
-@import 'variables';
+// Layout
+//
+// style top level elements like header and footer,
+// as well as grid setup.
+// ========================================
+@import 'layout/init';
 
-// Simple 12-column grid
-@import 'grid';
+// Module-Specific Styles
+//
+// Include all your module/component specific styles here.
+// ========================================
+//
 
-// Shared styles -- typography; small, re-usable modules
-@import 'universal';
-
-// Nav
-@import 'header';
-
-// Footer
-@import 'footer';
-
-// Pages
-// @import '404';
+// Components
+@import '../components/ExampleComponent/ExampleComponent';
