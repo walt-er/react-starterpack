@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ExampleComponent from '../ExampleComponent/ExampleComponent';
+import ExampleComponent from '../../components/ExampleComponent/ExampleComponent';
 
 class ExampleContainer extends Component {
     constructor(props) {

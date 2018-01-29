@@ -13,24 +13,83 @@
     "env": {
         "browser": true,     // browser global variables.
         "node": true,        // Node.js global variables and Node.js-specific rules.
-        "amd": true,         // defines require() and define() as global variables as per the amd spec.
-        "jquery": true,      // jquery global variables.
+        "amd": true         // defines require() and define() as global variables as per the amd spec.
     },
 
-    // Variables to allow arbitrarirly, use sparingly! 
-    "globals": [],
+    // Variables to allow arbitrarirly, use sparingly!
+    "globals": {
+        "window": true,
+        "document": true
+    },
 
     // NPM plugins for ESLint
     "plugins": [],
 
-    // Use recommended rules from http://eslint.org/docs/rules/
-    "extends": "eslint:recommended",
+    // Use recommended rules
+    "extends": "airbnb",
 
     // Specific rule overrides
     "rules": {
-        "no-var": 1,
-        "comma-dangle": 1,
-        "no-unused-vars": 1,
-        "no-console": 0 // allow console logs in dev
+        "func-names": [
+            "error",
+            "never"
+        ],
+        "class-methods-use-this": "off",
+        "curly": [
+            "error",
+            "all"
+        ],
+        "no-implicit-coercion": [
+            "error",
+            {
+                "boolean": true,
+                "number": true,
+                "string": true,
+                "allow": []
+            }
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "no-debugger": "warn",
+        "padded-blocks": "off",
+        "prefer-destructuring": [
+            "warn",
+            {
+                "array": true,
+                "object": true
+            }
+        ],
+        "brace-style": [
+            "error",
+            "stroustrup"
+        ],
+        "eol-last": "off",
+        "max-len": "off",
+        "no-plusplus": "off",
+        "no-underscore-dangle": "off",
+        "one-var": "off",
+        "one-var-declaration-per-line": "off",
+        "operator-assignment": "off",
+        "semi-spacing": "off",
+        "space-before-function-paren": [
+            "error",
+            {
+                "anonymous": "never",
+                "named": "never",
+                "asyncArrow": "never"
+            }
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        // Project-specific
+        "no-script-url": "off",
+        "react/forbid-prop-types": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "react/prefer-stateless-function": "off"
     }
 }

@@ -1,23 +1,23 @@
 // Standard reset
-@import 'reset'; 
+@import 'reset';
 
 // Fonts
 @import 'fonts';
 
 // Mixins, colors, utility classes
-@import 'variables'; 
+@import 'variables';
 
 // Simple 12-column grid
-@import 'grid'; 
+@import 'grid';
 
 // Shared styles -- typography; small, re-usable modules
 @import 'universal';
 
-// Nav 
-@import 'header'; 
+// Nav
+@import 'header';
 
 // Footer
-@import 'footer'; 
+@import 'footer';
 
 // Pages
 // @import '404';
