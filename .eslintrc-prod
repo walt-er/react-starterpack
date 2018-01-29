@@ -1,0 +1,12 @@
+{
+	// Extend the standard config file for this project
+	"extends": [
+        "./.eslintrc"
+    ],
+
+    // Add stricter rules when building for production
+    "rules": {
+        "comma-dangle": 2,
+        "no-console": 2
+    }
+}

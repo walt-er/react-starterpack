@@ -1,0 +1,36 @@
+{
+
+    // Tell the linter to expect ES6 features
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+
+    // Variables to allow from external libraries
+    "env": {
+        "browser": true,     // browser global variables.
+        "node": true,        // Node.js global variables and Node.js-specific rules.
+        "amd": true,         // defines require() and define() as global variables as per the amd spec.
+        "jquery": true,      // jquery global variables.
+    },
+
+    // Variables to allow arbitrarirly, use sparingly! 
+    "globals": [],
+
+    // NPM plugins for ESLint
+    "plugins": [],
+
+    // Use recommended rules from http://eslint.org/docs/rules/
+    "extends": "eslint:recommended",
+
+    // Specific rule overrides
+    "rules": {
+        "no-var": 1,
+        "comma-dangle": 1,
+        "no-unused-vars": 1,
+        "no-console": 0 // allow console logs in dev
+    }
+}
