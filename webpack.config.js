@@ -2,9 +2,13 @@
 // Plugins and such
 const webpack = require('webpack');
 const path = require('path');
-const copyWebpackPlugin = require('copy-webpack-plugin');
-const extractTextPlugin = require('extract-text-webpack-plugin');
-const jsonImporter = require('node-sass-json-importer');
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const JsonImporter = require('node-sass-json-importer');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+const PORT = 3000;
 
 module.exports = ({ BUILD, PROD, HOT }) => {
 
@@ -16,13 +20,13 @@ module.exports = ({ BUILD, PROD, HOT }) => {
 
     if (HOT) {
         entryApp.push(
-            'webpack-dev-server/client?http://localhost:3000',
+            `webpack-dev-server/client?http://localhost:${PORT}`,
             'webpack/hot/dev-server'
         );
     }
 
     const plugins = [
-        new copyWebpackPlugin([
+        new CopyWebpackPlugin([
             {
                 context: path.join(__dirname, './src/images'),
                 from: '**/*',
@@ -34,8 +38,8 @@ module.exports = ({ BUILD, PROD, HOT }) => {
                 to: PROD ? path.join(__dirname, './prod') : path.join(__dirname, './dist')
             }
         ]),
-        new extractTextPlugin({
-            filename: !HOT ? 'main.min.css' : 'main.css',
+        new ExtractTextPlugin({
+            filename: 'main.css',
             disable: false,
             allChunks: true
         }),
@@ -47,36 +51,37 @@ module.exports = ({ BUILD, PROD, HOT }) => {
         // Hot module replacement for dev
         plugins.push(new webpack.HotModuleReplacementPlugin());
 
-    } else {
+    }
+    else {
 
-        // Uglify JS for prod
-        plugins.push(new webpack.optimize.UglifyJsPlugin({
-            mangle: true,
-            compress: {
-                warnings: false, // Suppress uglification warnings
-                pure_getters: true,
-                unsafe: true,
-                unsafe_comps: true,
-                screw_ie8: true
-            },
-            output: {
-                comments: false,
-            },
-            exclude: [/\.min\.js$/gi] // skip pre-minified libs
+        // Uglify JS for build
+        plugins.push(new UglifyJsPlugin({
+            sourceMap: !PROD,
+            uglifyOptions: {
+                mangle: true,
+                compress: {
+                    warnings: false, // Suppress uglification warnings
+                    pure_getters: true,
+                    unsafe_comps: true
+                },
+                output: {
+                    comments: false
+                }
+            }
         }));
 
     }
 
     return {
-        devtool: !PROD ? 'cheap-source-map' : '', // the best source map for dev. no map for prod
+        devtool: !PROD ? 'cheap-eval-source-map' : '', // the best source map for dev
         devServer: {
             contentBase: path.join(__dirname, './dist'), // static files (index.html) to serve on URL
             publicPath: '/static/', // put bundled JS here
             watchContentBase: true, // watch dist folder for changes and refresh
             historyApiFallback: true, // show index.html for 404s
             hot: true, // reload modules without reloading page
-            // inline: true, // inline the webpack stuff that allows for refresh on change
-            port: 3000, // pick a port
+            inline: true, // inline the webpack stuff that allows for refresh on change
+            port: PORT, // pick a port
             watchOptions: {
                 poll: 1000 // check for changes every second
             }
@@ -87,7 +92,7 @@ module.exports = ({ BUILD, PROD, HOT }) => {
         output: {
             path: PROD ? path.join(__dirname, '/prod/static/') : path.join(__dirname, '/dist/static/'),
             publicPath: '/static/',
-            filename: '[name].min.js'
+            filename: '[name].js'
         },
         node: {
             Buffer: false // this helps with stylelint
@@ -114,7 +119,7 @@ module.exports = ({ BUILD, PROD, HOT }) => {
                 },
                 {
                     test: /\.scss$/,
-                    use: ['css-hot-loader'].concat(extractTextPlugin.extract({
+                    use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
                         fallback: 'style-loader',
                         use: [
                             {
@@ -137,12 +142,12 @@ module.exports = ({ BUILD, PROD, HOT }) => {
                             {
                                 loader: 'sass-loader',
                                 options: {
-                                    importer: jsonImporter,
+                                    importer: JsonImporter,
                                     includePaths: [
                                         path.resolve(__dirname, 'node_modules/bourbon-neat/core')
                                     ],
                                     outputStyle: !HOT ? 'compressed' : 'expanded',
-                                    outFile: !HOT ? 'main.min.css' : 'main.css',
+                                    outFile: 'main.css',
                                     sourceMap: true,
                                     sourceMapContents: true
                                 }
@@ -150,9 +155,9 @@ module.exports = ({ BUILD, PROD, HOT }) => {
                         ]
                     }))
                 },
-                {   // compile css in the same way, without the sass loader
+                { // compile css in the same way, without the sass loader
                     test: /\.css/,
-                    use: ['css-hot-loader'].concat(extractTextPlugin.extract({
+                    use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
                         fallback: 'style-loader',
                         use: [
                             {
@@ -170,12 +175,12 @@ module.exports = ({ BUILD, PROD, HOT }) => {
                                         require('postcss-reporter')({ clearMessages: true })
                                     ]
                                 }
-                            },
+                            }
                         ]
                     }))
                 }
             ]
         },
-        plugins: plugins
-    }
+        plugins
+    };
 };
