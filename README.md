@@ -1,6 +1,6 @@
-#React Starterpack
+# React Starterpack
 
-An empty project for starting new React apps
+An empty project for starting new React apps. Includes configuration for Webpack, Babel, ESLint, Stylelint, and Editorconfig.
 
 `npm start`: lint code and start webpack dev server (watch), serve from `/dist`
 `npm run build:dev`: lint code and build into `/dist` with dev linting options, includes sourcemaps
