@@ -3,12 +3,10 @@
 const webpack = require('webpack');
 const path = require('path');
 const copyWebpackPlugin = require('copy-webpack-plugin');
-const extractTextPlugin = require("extract-text-webpack-plugin");
+const extractTextPlugin = require('extract-text-webpack-plugin');
 const jsonImporter = require('node-sass-json-importer');
 
-module.exports = ({ BUILD }) => {
-
-    const PROD = process.env.NODE_ENV == 'production';
+module.exports = ({ BUILD, PROD, HOT }) => {
 
     const entryApp = [
         'babel-polyfill',
@@ -16,7 +14,7 @@ module.exports = ({ BUILD }) => {
         path.join(__dirname, './src/styles/main.scss')
     ];
 
-    if (!BUILD) {
+    if (HOT) {
         entryApp.push(
             'webpack-dev-server/client?http://localhost:3000',
             'webpack/hot/dev-server'
@@ -28,23 +26,23 @@ module.exports = ({ BUILD }) => {
             {
                 context: path.join(__dirname, './src/images'),
                 from: '**/*',
-                to: path.join(__dirname, './dist/images')
+                to: PROD ? path.join(__dirname, './prod/images') : path.join(__dirname, './dist/images')
             },
             {
                 context: path.join(__dirname, './src'),
                 from: 'index.html',
-                to: path.join(__dirname, './dist')
+                to: PROD ? path.join(__dirname, './prod') : path.join(__dirname, './dist')
             }
         ]),
         new extractTextPlugin({
-            filename: 'main.css',
+            filename: !HOT ? 'main.min.css' : 'main.css',
             disable: false,
             allChunks: true
         }),
         new webpack.NoEmitOnErrorsPlugin()
     ];
 
-    if (!BUILD) {
+    if (HOT) {
 
         // Hot module replacement for dev
         plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -70,7 +68,7 @@ module.exports = ({ BUILD }) => {
     }
 
     return {
-        devtool: (!PROD) ? 'cheap-source-map' : '', // the best source map for dev. no map for prod
+        devtool: !PROD ? 'cheap-source-map' : '', // the best source map for dev. no map for prod
         devServer: {
             contentBase: path.join(__dirname, './dist'), // static files (index.html) to serve on URL
             publicPath: '/static/', // put bundled JS here
@@ -87,9 +85,9 @@ module.exports = ({ BUILD }) => {
             app: entryApp
         },
         output: {
-            path: PROD ? path.join(__dirname, '/build/static/') : path.join(__dirname, '/dist/static/'),
+            path: PROD ? path.join(__dirname, '/prod/static/') : path.join(__dirname, '/dist/static/'),
             publicPath: '/static/',
-            filename: '[name].bundle.js'
+            filename: '[name].min.js'
         },
         node: {
             Buffer: false // this helps with stylelint
@@ -143,8 +141,8 @@ module.exports = ({ BUILD }) => {
                                     includePaths: [
                                         path.resolve(__dirname, 'node_modules/bourbon-neat/core')
                                     ],
-                                    outputStyle: (!BUILD) ? "expanded" : "compressed",
-                                    outFile: 'main.css',
+                                    outputStyle: !HOT ? 'compressed' : 'expanded',
+                                    outFile: !HOT ? 'main.min.css' : 'main.css',
                                     sourceMap: true,
                                     sourceMapContents: true
                                 }

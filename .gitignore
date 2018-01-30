@@ -6,11 +6,12 @@
 Thumbs.db
 .DS_Store
 *.log
-node_modules
 config.yml
 sql/XXXXX.sql
 
+node_modules
 build
+prod
 dist
 
 *.code-workspace
