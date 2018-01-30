@@ -3,9 +3,11 @@ import { Switch } from 'react-router-dom';
 import { Route } from 'react-router';
 
 import ExampleContainer from '../../views/ExampleContainer/ExampleContainer';
+import ExampleContainer2 from '../../views/ExampleContainer2/ExampleContainer2';
 
 const allViews = {
-    home: ExampleContainer
+    home: ExampleContainer,
+    test: ExampleContainer2
 };
 
 class Main extends Component {
@@ -35,9 +37,12 @@ class Main extends Component {
             <main>
                 <Switch>
                     <Route
-                        pattern="/"
-                        exactly
+                        path="/"
                         component={this.loadView('home')}
+                    />
+                    <Route
+                        path="/test/"
+                        component={this.loadView('test')}
                     />
                 </Switch>
             </main>
