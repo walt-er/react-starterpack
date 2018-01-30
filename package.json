@@ -30,7 +30,7 @@
     "tkill": "taskkill /f /im node.exe"
   },
   "pre-commit": [
-    "vet"
+    "vet:dev"
   ],
   "dependencies": {
     "prop-types": "15.5.8",
