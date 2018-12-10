@@ -66,6 +66,7 @@
             "stroustrup"
         ],
         "eol-last": "off",
+        "linebreak-style": 1,
         "max-len": "off",
         "no-plusplus": "off",
         "no-underscore-dangle": "off",
